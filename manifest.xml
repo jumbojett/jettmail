@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin_manifest>
+        <field key="author" value="Michael Jett" />
+        <field key="version" value="2.0" />
+        <field key="description" value="Adds an option in the Settings &gt; Notifications page. This will give users options to cache their emails and then send out a big one daily.
+        Make sure /pg/cron/daily is being hit by the crontab.
+        This is also dependent upon the notifications plugin being enabled. Make sure it is placed before the notifications plugin." />
+        <field key="website" value="http://www.mitre.org/" />
+        <field key="licence" value="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2" />
+        <field key="copyright" value="MITRE" />
+        <field key="elgg_version" value="2009022701" />
+</plugin_manifest>
