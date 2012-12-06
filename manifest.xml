@@ -8,5 +8,5 @@
         <field key="website" value="http://www.mitre.org/" />
         <field key="licence" value="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2" />
         <field key="copyright" value="MITRE" />
-        <field key="elgg_version" value="2009022701" />
+        <field key="elgg_version" value="2011052801" />
 </plugin_manifest>
