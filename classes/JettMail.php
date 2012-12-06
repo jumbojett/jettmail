@@ -2,6 +2,26 @@
 
 /**
  *
+ * @package jettmail
+ * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
+ * @author Michael Jett
+ * @copyright MITRE
+ * @link http://mitre.org/
+ *
+ * Approved for Public Release: 12-2907. Distribution Unlimited
+ *
+ **/
+
+
+/**
+ *
+ * @class JettMail
+ *
+ * Utilities for email
+ *  - plaintext / html content types
+ *  - mail process forking
+ *  - encoding
+ *
  */
 class JettMail
 {

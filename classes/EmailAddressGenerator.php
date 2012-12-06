@@ -1,8 +1,21 @@
 <?php
 
 /**
+ *
+ * @package jettmail
+ * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
+ * @author Michael Jett
+ * @copyright MITRE
+ * @link http://mitre.org/
+ *
+ * Approved for Public Release: 12-2907. Distribution Unlimited
+ *
+ **/
+
+
+/**
+ * @class EmailAddressGenerator
  * Signs and creates email addresses for reply to emails
- * @author mjett@mitre.org
  */
 class EmailAddressGenerator {
 
