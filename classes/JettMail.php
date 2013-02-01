@@ -84,7 +84,7 @@ class JettMail
         // get the sendmail path from the php ini config settings
         $sendmail_path = trim(ini_get('sendmail_path'));
 
-        if ($sendmail_path) {
+        /*if ($sendmail_path) {
 
             $email_message = escapeshellarg($headers . $body);
             $to_email = escapeshellarg($to_email);
@@ -93,14 +93,14 @@ class JettMail
             // psuedo fork it so we don't have to wait
             return exec('nohup echo ' . $email_message . ' | 	' . $sendmail_path . ' ' . $to_email . ' > /dev/null 2> /dev/null & echo $!');
 
-        } else {
+        } else {*/
 
             // if we can't find a sendmail path then just send email the old fashioned way
             return mail($to_email,
                 $subject,
                 $body,
                 $headers);
-        }
+        //}
 
     }
 
