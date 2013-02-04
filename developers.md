@@ -41,4 +41,4 @@ Use the jettmail address generator view
         ));
 
 ##Overriding the default email template
-The jettmail email template lives in the *jettmail/email/template* view simply unregister this view and override it with your own.
+The jettmail email template lives in the *jettmail/email/template* view. Simply un-register this view and override it with your own.
