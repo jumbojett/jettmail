@@ -14,16 +14,6 @@ echo elgg_view('input/dropdown', $params);
 ?>
 <br/>(this setting allows you to halt all email - without disabling the plugin)<br/><br/>
 
-<?php
-$whitelist = $vars['entity']->whitelist;
-
-
-echo 'White List (if no White List is defined email will send normally)';
-echo elgg_view('input/text', array('name' => 'params[whitelist]',
-    'value' => $whitelist));
-
-
-?>
 
 <p>
     <?php

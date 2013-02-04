@@ -2,7 +2,7 @@
 
 /**
  *
- * @package jettmail
+ * @package JettMail2
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Michael Jett
  * @copyright MITRE
@@ -15,6 +15,38 @@
 
 class JettMailPlugin
 {
+    /**
+     * @var array These are a set of default hooks we watch for to tell elgg whether or not to digest types of notifications
+     */
+    private $digestWatchHooks = array (
+        // Digest group discussion comments
+        array('hook' => 'notify:annotation:message', 'type' => 'group_topic_post'),
+        array('hook' => 'action', 'type' => 'comments/add'),
+        // Digest new initial discussion posts
+        array('hook' => 'notify:entity:message', 'type' => 'object')
+    );
+
+    /**
+     * Internal function to let us see if we can digest a hook in context
+     */
+    private function canDigest () {
+        foreach ($this->digestWatchHooks as $watch) {
+            if (elgg_hook_in_context($watch['hook'],$watch['type'])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Public function that allows another plugin to add a digest watch hook
+     * @param $hook
+     * @param $type
+     */
+    public function addDigestWatchHook ($hook,$type) {
+        array_push($this->digestWatchHooks, array('hook' => $hook, 'type' => $type));
+    }
 
     /**
      *
@@ -58,24 +90,24 @@ class JettMailPlugin
         /**
          * Generate a secret email signature key if one isn't present
          */
-        if (!elgg_get_plugin_setting('sig_key', 'jettmail')) {
-            elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'jettmail');
+        if (!elgg_get_plugin_setting('sig_key', 'JettMail2')) {
+            elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'JettMail2');
         }
 
         /**
          * If the user has specifically requested that we regenerate the email signature key
          */
-        if (elgg_get_plugin_setting("refreshSigKey", 'jettmail') == 'yes') {
-            elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'jettmail');
-            elgg_set_plugin_setting('refreshSigKey', null, 'jettmail');
+        if (elgg_get_plugin_setting("refreshSigKey", 'JettMail2') == 'yes') {
+            elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'JettMail2');
+            elgg_set_plugin_setting('refreshSigKey', null, 'JettMail2');
         }
 
         /**
          * Make sure there is a default value for expiring tokens
          * If there isn't set it to 15 days
          */
-        if (!(int)elgg_get_plugin_setting("tokenDaysValid", "jettmail")) {
-            elgg_set_plugin_setting('tokenDaysValid', 15, "jettmail");
+        if (!(int)elgg_get_plugin_setting("tokenDaysValid", "JettMail2")) {
+            elgg_set_plugin_setting('tokenDaysValid', 15, "JettMail2");
         }
 
         /**
@@ -115,13 +147,13 @@ class JettMailPlugin
 
         elgg_set_context('jettmail_email_handler');
 
-        //If the user has be disabled block all notifications sent to that user. ~Joe
+        // If the user has be disabled block all notifications sent to that user. ~Joe
         if ($to->inactive && $to->inactive == 'yes') {
             return true;
         }
 
-        // fetch the plugin setting - an admin can disable email altogether
-        $email_enabled = elgg_get_plugin_setting('enable_email', 'jettmail');
+        // Fetch the plugin setting - an admin can disable email altogether
+        $email_enabled = elgg_get_plugin_setting('enable_email', 'JettMail2');
         if ($email_enabled == 'no') {
             return true;
         }
@@ -139,20 +171,16 @@ class JettMailPlugin
             $params = array();
 
 
-        // if the user has digest enabled
-        if (isset($to->digest) && $to->digest == 'on'
-            // then digest group discussion comments
-            && elgg_hook_in_context('notify:annotation:message', 'group_topic_post')
-            // digest new initial discussion posts
-            && elgg_hook_in_context('notify:entity:message', 'object')
-        ) {
+        // If the user has digest enabled
+        // And the hook is in context
+        if (isset($to->digest) && $to->digest == 'on' && self::canDigest()) {
 
             elgg_set_ignore_access(true);
 
-            // elgg is horrible at handling metadata objects so we (un)serialize them
+            // Elgg is horrible at handling metadata objects so we (un)serialize them
             $cached_notifications = unserialize($to->notifications);
 
-            // initialize a notifications cache via metadata
+            // Initialize a notifications cache via metadata
             if (!is_array($cached_notifications)) {
                 $cached_notifications = array();
             }
@@ -160,7 +188,7 @@ class JettMailPlugin
                 $cached_notifications[$from->guid] = array();
             }
 
-            // add the notification to the stack
+            // Add the notification to the stack
             array_push($cached_notifications[$from->guid], (object)array(
                 'subject' => $subject,
                 'message' => $message
@@ -329,7 +357,7 @@ class JettMailPlugin
                     'text' => 'email a reply'
                 ));
 
-                // append the special email onto the message body
+                // Append the special email onto the message body
                 return $message . $email_text;
 
             }, 1000);
@@ -349,7 +377,7 @@ class JettMailPlugin
 
                 $subtype = $entity->getSubtype();
 
-                // we append an email reply text if these are blog or page notifications
+                // Append an email reply text if these are blog or page notifications
                 if (in_array($subtype, array("blog", "page_top", "page"))) {
 
                     $email_text = elgg_view("jettmail/email/address/generate", array(
@@ -359,7 +387,7 @@ class JettMailPlugin
                         'text' => 'email a reply'
                     ));
 
-                    // append the special email onto the message body
+                    // Append the special email onto the message body
                     return $message . $email_text;
                 }
 
@@ -370,5 +398,5 @@ class JettMailPlugin
     }
 }
 
-$jett_mail = new JettMailPlugin();
+$jett_mail_plugin = new JettMailPlugin();
 
