@@ -13,7 +13,7 @@ Jett Mail takes elgg email notifications to the next level, allowing deep integr
 
 **Please note this code is in alpha and is currently being developed. Use at your own risk.**
 
-## Compatibility requirements
+## Server requirements
  - Elgg 1.8.3 or greater
  - Unix-based
  - PHP 5.3 or greater
