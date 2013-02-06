@@ -1,12 +1,40 @@
 #!/usr/bin/php
 <?php
 
-    // this script can only be called via the command line
+/*
+    Plugin Name: jettmail
+    Plugin URI: http://id.mitre.org/
+    Description: Extends elgg email capabilities
+    Version: 2.0
+    Author: Michael Jett
+    Author URI: http://www.mitre.org/
+    Author Email: mjett@mitre.org
+    License:
+
+      Copyright 2012 MITRE (mjett@mitre.org)
+
+      This program is free software; you can redistribute it and/or modify
+      it under the terms of the GNU General Public License, version 2, as
+      published by the Free Software Foundation.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
+
+      You should have received a copy of the GNU General Public License
+      along with this program; if not, write to the Free Software
+      Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+    Approved for Public Release: 12-2907. Distribution Unlimited
+*/
+
+    // This script can only be called via the command line
     if (!(!empty($argc) && strstr($argv[0], basename(__FILE__)))) {
         die("This script can only be run from the command line");
     }
 
-    // ignore walled garden
+    // Ignore walled garden
     $_SERVER['REQUEST_URI'] = '/';
 
     // Load Elgg engine will not include plugins
@@ -29,7 +57,7 @@
         exit;
     }
 
-    // security checks
+    // Security checks
     $EmailVerify = new EmailAddressGenerator();
     $valid = $EmailVerify->verify($Parser->extractEmail('to'), $Parser->extractEmail('from'));
 
@@ -41,22 +69,22 @@
     $html = $Parser->getMessageBody('html');
     $attachments = $Parser->getAttachments();
 
-    // at this time we only support the text body of the message
+    // We only support the text body of the message
     // MS Outlook prints too much awful html to format it correctly
     $message_body = $text;
 
 
-    // remove the original body and just get the reply text
-    // for outlook client replies
+    // Remove the original body and just get the reply text
+    // For outlook client replies
     list ($message_body) = explode("From: {$CONFIG->site->name} [mailto:", $message_body);
-    // for outlook web client replies
+    // For outlook web client replies
     list ($message_body) = explode("________________________________", $message_body);
 
-    // eliminate a possible security hole where the special email address could be printed in the body
+    // Eliminate a possible security hole where the special email address could be printed in the body
     $message_body = str_replace($Parser->extractEmail('to'), "", $message_body);
 
-    // elgg will auto-load html2text class from our classes plugin dir
-    // we make sure this message body is free of html junk
+    // Elgg will auto-load html2text class from our classes plugin dir
+    // Make sure this message body is free of html garbage
     $h2t = new html2text($message_body);
     $message_body = $h2t->get_text();
 
@@ -68,7 +96,7 @@
 
     $logged_in = login($user, false);
 
-    // generate new action tokens so elgg won't have a fit
+    // Generate new action tokens so elgg won't have a fit
     set_input('__elgg_token', generate_action_token(time()));
     set_input('__elgg_ts', time());
 

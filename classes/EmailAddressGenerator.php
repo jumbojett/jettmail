@@ -1,16 +1,32 @@
 <?php
 
-/**
- *
- * @package jettmail
- * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
- * @author Michael Jett
- * @copyright MITRE
- * @link http://mitre.org/
- *
- * Approved for Public Release: 12-2907. Distribution Unlimited
- *
- **/
+/*
+    Plugin Name: jettmail
+    Plugin URI: http://id.mitre.org/
+    Description: Extends elgg email capabilities
+    Version: 2.0
+    Author: Michael Jett
+    Author URI: http://www.mitre.org/
+    Author Email: mjett@mitre.org
+    License:
+
+      Copyright 2012 MITRE (mjett@mitre.org)
+
+      This program is free software; you can redistribute it and/or modify
+      it under the terms of the GNU General Public License, version 2, as
+      published by the Free Software Foundation.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
+
+      You should have received a copy of the GNU General Public License
+      along with this program; if not, write to the Free Software
+      Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+    Approved for Public Release: 12-2907. Distribution Unlimited
+*/
 
 
 /**
