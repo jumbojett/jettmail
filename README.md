@@ -35,4 +35,7 @@ Jett Mail takes elgg email notifications to the next level, allowing deep integr
     > This will tell sendmail to route all messages to the elggmail account
 which are destined for a user which doesn't exist on our server.
 
+## Developer's guide
+See the [developer's guide](https://github.com/jumbojett/jettmail/wiki/Developer%27s-Guide) on github.
+
 
