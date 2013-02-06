@@ -52,7 +52,7 @@ $to_email = $vars['to_email'];
     .ExternalClass { width: 100%; display:block !important; } /* Force Hotmail to display emails at full width */
         /* Reset Styles */
         /* Add 100px so mobile switch bar doesn't cover street address. */
-    body { background-color: #ffffff; margin: 0; padding: 0; }
+    body { background-color: #ededed; margin: 0; padding: 0; }
     img { outline: none; text-decoration: none; display: block;}
     br, strong br, b br, em br, i br { line-height:100%; }
     h1, h2, h3, h4, h5, h6 { line-height: 100% !important; -webkit-font-smoothing: antialiased; }
@@ -70,6 +70,13 @@ $to_email = $vars['to_email'];
         white-space: normal;
         word-break: break-all;
     }
+    hr {
+        color: #EDEDED;
+        background-color: #EDEDED;
+        height: 1px;
+        border: 0;
+    }
+    .date {font-size: 11px; color: #C7C7C7;}
     #background-table { background-color: #ffffff; }
         /* Webkit Elements */
     #top-bar { border-radius:6px 6px 0px 0px; -moz-border-radius: 6px 6px 0px 0px; -webkit-border-radius:6px 6px 0px 0px; -webkit-font-smoothing: antialiased; background-color: #ffffff; color: #ededed; }
@@ -79,8 +86,8 @@ $to_email = $vars['to_email'];
     body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; }
     .header-content, .footer-content-left, .footer-content-right { -webkit-text-size-adjust: none; -ms-text-size-adjust: none; }
         /* Prevent Webkit and Windows Mobile platforms from changing default font sizes on header and footer. */
-    .header-content { font-size: 12px; color: #ededed; }
-    .header-content a { font-weight: bold; color: #c7c7c7; text-decoration: none; }
+    .header-content { font-size: 11px; color: #ededed; }
+    .header-content a { font-weight: bold; color: #000; }
     #headline p { color: #444444; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; font-size: 36px; text-align: center; margin-top:0px; margin-bottom:30px; }
     #headline p a { color: #444444; text-decoration: none; }
     .article-title { font-size: 18px; line-height:24px; color: #b0b0b0; font-weight:bold; margin-top:0px; margin-bottom:18px; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; }
@@ -94,12 +101,12 @@ $to_email = $vars['to_email'];
     .article-content li { font-size: 13px; line-height: 18px; color: #444444; }
     .article-content li a { color: #2f82de; text-decoration:underline; }
     .article-content p {margin-bottom: 15px;}
-    .footer-content-left { font-size: 12px; line-height: 15px; color: #ededed; margin-top: 0px; margin-bottom: 15px; }
-    .footer-content-left a { color: #c7c7c7; font-weight: bold; text-decoration: none; }
-    .footer-content-right { font-size: 11px; line-height: 16px; color: #ededed; margin-top: 0px; margin-bottom: 15px; }
-    .footer-content-right a { color: #c7c7c7; font-weight: bold; text-decoration: none; }
-    #footer { background-color: #ffffff; color: #ededed; }
-    #footer a { color: #c7c7c7; text-decoration: none; font-weight: bold; }
+    .footer-content-left { font-size: 11px; line-height: 15px; color: #000; margin-top: 0px; margin-bottom: 15px; }
+    .footer-content-left a { color: #000; font-weight: bold; text-decoration: none; }
+    .footer-content-right { font-size: 11px; line-height: 16px; color: #000; margin-top: 0px; margin-bottom: 15px; }
+    .footer-content-right a { color: #000; font-weight: bold; text-decoration: none; }
+    #footer { background-color: #ffffff; color: #000; }
+    #footer a { color: #000; text-decoration: none; font-weight: bold; }
     #permission-reminder { white-space: normal; }
     #street-address { color: #b0b0b0; white-space: normal; }
 </style>
@@ -148,7 +155,7 @@ $to_email = $vars['to_email'];
                                 'action' => 'create.status_update',
                                 'guid' => 0,
                                 'to_email' => $to_email,
-                                'text' => 'Email a Status Update'
+                                'text' => 'Email a status update'
                             )); ?>
                         </span></div>
                     <table class="w325" border="0" cellpadding="0" cellspacing="0" width="350">
@@ -295,7 +302,7 @@ $to_email = $vars['to_email'];
                                             <a name="<?= $anchor++ ?>"></a>
                                             <?= $notification->message ?>
                                             <hr/>
-                                            <div style="font-size: 10pt; color: #787878;">
+                                            <div class="date">
                                                 <?= date("l, F j, g:i A") ?>
                                             </div><br/>
                                             <?php } ?>
@@ -337,7 +344,7 @@ $to_email = $vars['to_email'];
             </tr>
             <tr>
                 <td class="w30" width="30"></td>
-                <td class="w580" valign="top" width="360">
+                <td class="w580" valign="top" width="260">
                     <span class="hide"><p id="permission-reminder" class="footer-content-left" align="left">
                         <span>You're receiving this because of your notification preferences.
                         </span>
@@ -353,7 +360,7 @@ $to_email = $vars['to_email'];
                     </p>
                 </td>
                 <td class="hide w0" width="60"></td>
-                <td class="hide w0" valign="top" width="160">
+                <td class="hide w0" valign="top" width="260">
                     <p class="footer-content-right" align="right">
                         Email replies are one time use per notification and expire <?=
                         date("M j, Y", strtotime('+'
