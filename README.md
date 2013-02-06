@@ -13,6 +13,12 @@ Jett Mail takes elgg email notifications to the next level, allowing deep integr
 
 **Please note this code is in alpha and is currently being developed. Use at your own risk.**
 
+## Compatibility requirements
+ - Elgg 1.8.3 or greater
+ - Unix-based
+ - PHP 5.3 or greater
+ - Ability to forward incoming emails to PHP scripts. *see below*
+
 ## Server Configuration (Unix-based)
  1. Get your server to forward email to the JettMail terminal plugin script
 > Most hosts provide control panel that you can do this easily. If you do not have access to such luxury edit **/etc/aliases** in your favorite editor and add the following line
