@@ -71,25 +71,26 @@ if (is_numeric($action_guid) && $action && $type) {
 
     <label for="action_guid">Action guid:</label>
     <p>
-    <input type="text" name="action_guid" id="action_guid"/>
+        <input type="text" name="action_guid" id="action_guid"/>
     </p>
 
     <label for="type">Type:</label>
 
     <p>
-    <select name="type" id="type">
-        <option value="generic_comment">generic_comment</option>
-    </select>
+        <select name="type" id="type">
+            <option value="generic_comment">generic_comment</option>
+            <option value="group_topic_post">group_topic_post</option>
+        </select>
     </p>
 
     <label for="action">Action:</label>
 
     <p>
-    <select name="action" id="action">
-        <option value="create">create</option>
-        <option value="update">update</option>
-        <option value="delete">delete</option>
-    </select>
+        <select name="action" id="action">
+            <option value="create">create</option>
+            <option value="update">update</option>
+            <option value="delete">delete</option>
+        </select>
     </p>
     <br/>
     <input type="submit"/>

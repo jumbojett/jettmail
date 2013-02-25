@@ -28,7 +28,6 @@
     Approved for Public Release: 12-2907. Distribution Unlimited
 */
 
-
 class JettMailPlugin
 {
     /**
@@ -308,21 +307,39 @@ class JettMailPlugin
     static public function handleIncomingEmails() {
 
         /**
-         * Handle incoming emails for discussion posting
+         * Handle incoming emails for all generic comments (blogs, files, etc...)
          */
         elgg_register_plugin_hook_handler('email:integration:create', 'generic_comment',
             function ($hook_name, $entity_type, $return_value, $parameters) {
 
-                // setup the parameters
+                // Setup the parameters
                 set_input('topic_guid', $parameters['guid']);
                 set_input('entity_guid', $parameters['guid']);
                 set_input('generic_comment', $parameters['message']);
 
-                // set action
+                // Set action
                 set_input('action', 'comments/add');
 
-                // perform the action
+                // Perform the action
                 action("comments/add");
+
+
+            });
+
+        /**
+         * Handle incoming emails for discussion posts
+         */
+        elgg_register_plugin_hook_handler('email:integration:create', 'group_topic_post',
+            function ($hook_name, $entity_type, $return_value, $parameters) {
+
+                set_input('entity_guid', $parameters['guid']);
+                set_input('group_topic_post', $parameters['message']);
+
+                // Set action
+                set_input('action', 'discussion/reply/save');
+
+                // Perform the action
+                action("discussion/reply/save");
 
 
             });
@@ -333,12 +350,12 @@ class JettMailPlugin
         elgg_register_plugin_hook_handler('email:integration:create', 'generic_comment',
             function ($hook_name, $entity_type, $return_value, $parameters) {
 
-                // set update message
-                // needs to be 140 characters or less
+                // Set update message
+                // 140 characters or less
                 set_input('body', substr($parameters['message'], 0, 140));
                 set_input('method', 'site');
 
-                // set action
+                // Set action
                 set_input('action', 'thewire/add');
 
                 // perform the action
@@ -360,14 +377,22 @@ class JettMailPlugin
          */
         elgg_register_plugin_hook_handler('notify:annotation:message', 'group_topic_post',
             function ($hook, $type, $message, $params) {
+
                 $reply = $params['annotation'];
-                $method = $params['method'];
                 $topic = $reply->getEntity();
-                $poster = $reply->getOwnerEntity();
-                $group = $topic->getContainerEntity();
+
+                $reply_action = 'create.generic_comment';
+
+                // Group discussions get a different action since they do not truly utilize elgg's generic comment system
+                if (get_input('action') == "groups/addpost"
+                    || get_input('action') == "groups/addtopic"
+                    || get_input('action') == "discussion/reply/save"
+                    || get_input('action') == 'discussion/save') {
+                    $reply_action = 'create.group_topic_post';
+                }
 
                 $email_text = elgg_view("jettmail/email/address/generate", array(
-                    'action' => 'create.generic_comment',
+                    'action' => $reply_action,
                     'guid' => $topic->guid,
                     'to_email' => $params['to_entity']->email,
                     'text' => 'email a reply'
@@ -415,4 +440,3 @@ class JettMailPlugin
 }
 
 $jett_mail_plugin = new JettMailPlugin();
-
