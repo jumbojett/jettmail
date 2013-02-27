@@ -111,11 +111,11 @@ class JettMail
 
         } else {*/
 
-            // if we can't find a sendmail path then just send email the old fashioned way
-            return mail($to_email,
-                $subject,
-                $body,
-                $headers);
+        // if we can't find a sendmail path then just send email the old fashioned way
+        return mail(null,
+            $subject,
+            $body,
+            $headers);
         //}
 
     }
