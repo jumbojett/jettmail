@@ -185,6 +185,8 @@ class JettMailPlugin
         if (!$params)
             $params = array();
 
+        // Allow other plugins to hook in and modify the message
+        $message = elgg_trigger_plugin_hook('notify:jettmail:message', $from->getSubtype(), array('to_entity' => $to), $message);
 
         // If the user has digest enabled
         // And the hook is in context
@@ -440,3 +442,4 @@ class JettMailPlugin
 }
 
 $jett_mail_plugin = new JettMailPlugin();
+
