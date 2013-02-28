@@ -42,7 +42,8 @@ $user = $vars['user']->name;
                                 <td width="30"></td>
                                 <td align="left" valign="middle">
                                     <div style="color: #000; font-size: small; text-decoration: none;">
-                                        <webversion><a href="<?php echo $CONFIG->url; ?>activity">Web version</a></webversion>
+                                        <webversion><a href="<?php echo $CONFIG->url; ?>activity">Web version</a>
+                                        </webversion>
                                         &nbsp;|&nbsp;
                                         <?= elgg_view("jettmail/email/address/generate", array(
                                         'action' => 'create.status_update',
@@ -162,14 +163,13 @@ $user = $vars['user']->name;
                             <tr>
                                 <td width="30"></td>
                                 <td valign="top" width="260">
-                    <span>
-                        <p id="permission-reminder" align="left">
-                        <span>You are receiving this because of your<br>
-                            <a style="color: #000; font-weight: bold; text-decoration: none;"
-                               href="<?php echo $CONFIG->url; ?>settings/user/">notification
-                                preferences</a>
-                        </span>
-                        </p></span>
+                                    <p align="left">
+                                        You are receiving this because of your<br>
+                                        <a style="color: #000; font-weight: bold; text-decoration: none;"
+                                           href="<?php echo $CONFIG->url; ?>settings/user/">notification
+                                            preferences</a>
+                                    </p>
+
                                 </td>
                                 <td width="60"></td>
                                 <td valign="top" width="260">
@@ -182,13 +182,7 @@ $user = $vars['user']->name;
                                 </td>
                                 <td width="30"></td>
                             </tr>
-                            <tr>
-                                <td width="30"></td>
-                                <td height="15" width="360"></td>
-                                <td width="60"></td>
-                                <td width="160"></td>
-                                <td width="30"></td>
-                            </tr>
+
                             </tbody>
                         </table>
                     </td>
