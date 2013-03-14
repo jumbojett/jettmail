@@ -36,9 +36,11 @@ class JettMailPlugin
     private $digestWatchHooks = array (
         // Digest group discussion comments
         array('hook' => 'notify:annotation:message', 'type' => 'group_topic_post'),
+        array('hook' => 'action', 'type' => 'discussion/reply/save'),
         array('hook' => 'action', 'type' => 'comments/add'),
         // Digest new initial discussion posts
-        array('hook' => 'notify:entity:message', 'type' => 'object')
+        array('hook' => 'notify:entity:message', 'type' => 'object'),
+        array('hook' => 'action', 'type' => 'comments/add')
     );
 
     /**
