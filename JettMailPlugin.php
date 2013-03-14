@@ -33,7 +33,7 @@ class JettMailPlugin
     /**
      * @var array These are a set of default hooks we watch for to tell elgg whether or not to digest types of notifications
      */
-    private $digestWatchHooks = array (
+    private $digestWatchHooks = array(
         // Digest group discussion comments
         array('hook' => 'notify:annotation:message', 'type' => 'group_topic_post'),
         array('hook' => 'action', 'type' => 'discussion/reply/save'),
@@ -46,9 +46,9 @@ class JettMailPlugin
     /**
      * Internal function to let us see if we can digest a hook in context
      */
-    private function canDigest () {
+    private function canDigest() {
         foreach ($this->digestWatchHooks as $watch) {
-            if (elgg_hook_in_context($watch['hook'],$watch['type'])) {
+            if (elgg_hook_in_context($watch['hook'], $watch['type'])) {
                 return true;
             }
         }
@@ -61,7 +61,7 @@ class JettMailPlugin
      * @param $hook
      * @param $type
      */
-    public function addDigestWatchHook ($hook,$type) {
+    public function addDigestWatchHook($hook, $type) {
         array_push($this->digestWatchHooks, array('hook' => $hook, 'type' => $type));
     }
 
@@ -160,70 +160,75 @@ class JettMailPlugin
      */
     public function emailHandler(ElggEntity $from, ElggUser $to, $subject, $message, array $params = NULL) {
 
-        global $CONFIG;
+        // Handle email processing after elgg shuts down
+        elgg_register_event_handler('shutdown', 'system', function () use ($from, $to, $subject, $message, $params) {
+            global $CONFIG;
 
-        elgg_set_context('jettmail_email_handler');
+            elgg_set_context('jettmail_email_handler');
 
-        // If the user has be disabled block all notifications sent to that user. ~Joe
-        if ($to->inactive && $to->inactive == 'yes') {
-            return true;
-        }
-
-        // Fetch the plugin setting - an admin can disable email altogether
-        $email_enabled = elgg_get_plugin_setting('enable_email', 'JettMail2');
-        if ($email_enabled == 'no') {
-            return true;
-        }
-
-        if (!$from)
-            throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'from'));
-
-        if (!$to)
-            throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'to'));
-
-        if ($to->email == "")
-            throw new NotificationException(sprintf(elgg_echo('NotificationException:NoEmailAddress'), $to->guid));
-
-        if (!$params)
-            $params = array();
-
-        // Allow other plugins to hook in and modify the message
-        $message = elgg_trigger_plugin_hook('notify:jettmail:message', $from->getSubtype(), array('to_entity' => $to), $message);
-
-        // If the user has digest enabled
-        // And the hook is in context
-        if (isset($to->digest) && $to->digest == 'on' && self::canDigest()) {
-
-            elgg_set_ignore_access(true);
-
-            // Elgg is horrible at handling metadata objects so we (un)serialize them
-            $cached_notifications = unserialize($to->notifications);
-
-            // Initialize a notifications cache via metadata
-            if (!is_array($cached_notifications)) {
-                $cached_notifications = array();
-            }
-            if (!is_array($cached_notifications[$from->guid])) {
-                $cached_notifications[$from->guid] = array();
+            // If the user has be disabled block all notifications sent to that user. ~Joe
+            if ($to->inactive && $to->inactive == 'yes') {
+                return true;
             }
 
-            // Add the notification to the stack
-            array_push($cached_notifications[$from->guid], (object)array(
-                'subject' => $subject,
-                'message' => $message,
-                'time' => time()
-            ));
+            // Fetch the plugin setting - an admin can disable email altogether
+            $email_enabled = elgg_get_plugin_setting('enable_email', 'JettMail2');
+            if ($email_enabled == 'no') {
+                return true;
+            }
 
-            $to->notifications = serialize($cached_notifications);
+            if (!$from)
+                throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'from'));
 
-            $to->save();
-            elgg_set_ignore_access(false);
+            if (!$to)
+                throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'to'));
 
-        } else {
-            return JettMail::sendMail($to->email, $subject, array(array((object)array('message' => $message,'time' => time()))));
-        }
+            if ($to->email == "")
+                throw new NotificationException(sprintf(elgg_echo('NotificationException:NoEmailAddress'), $to->guid));
 
-        return true;
+            if (!$params)
+                $params = array();
+
+            // Allow other plugins to hook in and modify the message
+            $message = elgg_trigger_plugin_hook('notify:jettmail:message', $from->getSubtype(), array('to_entity' => $to), $message);
+
+            // If the user has digest enabled
+            // And the hook is in context
+            if (isset($to->digest) && $to->digest == 'on' && self::canDigest()) {
+
+                elgg_set_ignore_access(true);
+
+                // Elgg is horrible at handling metadata objects so we (un)serialize them
+                $cached_notifications = unserialize($to->notifications);
+
+                // Initialize a notifications cache via metadata
+                if (!is_array($cached_notifications)) {
+                    $cached_notifications = array();
+                }
+                if (!is_array($cached_notifications[$from->guid])) {
+                    $cached_notifications[$from->guid] = array();
+                }
+
+                // Add the notification to the stack
+                array_push($cached_notifications[$from->guid], (object)array(
+                    'subject' => $subject,
+                    'message' => $message,
+                    'time' => time()
+                ));
+
+                $to->notifications = serialize($cached_notifications);
+
+                $to->save();
+                elgg_set_ignore_access(false);
+
+            } else {
+                return JettMail::sendMail($to->email, $subject, array(array((object)array('message' => $message, 'time' => time()))));
+            }
+
+            return true;
+
+        });
+
 
     }
 
@@ -392,7 +397,8 @@ class JettMailPlugin
                 if (get_input('action') == "groups/addpost"
                     || get_input('action') == "groups/addtopic"
                     || get_input('action') == "discussion/reply/save"
-                    || get_input('action') == 'discussion/save') {
+                    || get_input('action') == 'discussion/save'
+                ) {
                     $reply_action = 'create.group_topic_post';
                 }
 
