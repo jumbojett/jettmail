@@ -210,7 +210,8 @@ class JettMailPlugin
             // Add the notification to the stack
             array_push($cached_notifications[$from->guid], (object)array(
                 'subject' => $subject,
-                'message' => $message
+                'message' => $message,
+                'time' => time()
             ));
 
             $to->notifications = serialize($cached_notifications);
@@ -219,7 +220,7 @@ class JettMailPlugin
             elgg_set_ignore_access(false);
 
         } else {
-            return JettMail::sendMail($to->email, $subject, array(array((object)array('message' => $message))));
+            return JettMail::sendMail($to->email, $subject, array(array((object)array('message' => $message,'time' => time()))));
         }
 
         return true;

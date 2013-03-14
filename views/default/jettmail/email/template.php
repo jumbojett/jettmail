@@ -133,7 +133,7 @@ $user = $vars['user']->name;
                                                             <?= $notification->message ?>
                                                             <hr style="color: #C7C7C7;background-color:#C7C7C7;height: 1px;border: 0;">
                                                             <div style="font-size: smaller; text-align: right; color: #C7C7C7;">
-                                                                <?= date("l, F j, g:i A") ?>
+                                                                <?= date("l, F j, g:i A" , $notification->time) ?>
                                                             </div><br>
                                                             <?php } ?>
                                                         <?php } ?>
