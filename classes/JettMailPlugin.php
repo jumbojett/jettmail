@@ -450,5 +450,5 @@ class JettMailPlugin
     }
 }
 
-$jett_mail_plugin = new JettMailPlugin();
+
 

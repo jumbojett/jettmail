@@ -38,7 +38,7 @@ ini_set('short_open_tag',1);
 if ((float)phpversion() < 5.3) {
     register_error("Jett mail requires at least php 5.3 or greater");
 } else {
-    include_once('JettMailPlugin.php');
+    $jett_mail_plugin = new JettMailPlugin();
 }
 
 /**
