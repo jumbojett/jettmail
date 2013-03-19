@@ -160,8 +160,10 @@ class JettMailPlugin
      */
     public function emailHandler(ElggEntity $from, ElggUser $to, $subject, $message, array $params = NULL) {
 
+        $can_digest = self::canDigest();
+
         // Handle email processing after elgg shuts down
-        elgg_register_event_handler('shutdown', 'system', function () use ($from, $to, $subject, $message, $params) {
+        elgg_register_event_handler('shutdown', 'system', function () use ($from, $to, $subject, $message, $params, $can_digest) {
             global $CONFIG;
 
             elgg_set_context('jettmail_email_handler');
@@ -194,7 +196,7 @@ class JettMailPlugin
 
             // If the user has digest enabled
             // And the hook is in context
-            if (isset($to->digest) && $to->digest == 'on' && self::canDigest()) {
+            if (isset($to->digest) && $to->digest == 'on' && $can_digest) {
 
                 elgg_set_ignore_access(true);
 
@@ -227,7 +229,7 @@ class JettMailPlugin
 
             return true;
 
-        });
+        },0);
 
 
     }
