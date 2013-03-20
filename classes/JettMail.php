@@ -74,6 +74,9 @@ class JettMail
      */
     static function sendMail($to_email, $subject, $notifications) {
 
+        // Allow other plugins to hook in and determine whether or not the email will be sent
+        $allow = elgg_trigger_plugin_hook('notify:jettmail:allow', 'all', array('to_email' => $to_email,'subject' => $subject,'notifications' => $notifications), true);
+        if (!$allow) return false;
 
         $message = elgg_view('jettmail/email/template', array('notifications' => $notifications, 'to_email' => $to_email));
 
@@ -107,7 +110,7 @@ class JettMail
 
             // send the email via sendmail process that gets spun off in the background
             // psuedo fork it so we don't have to wait
-            return exec('nohup echo ' . $email_message . ' | 	' . $sendmail_path . ' ' . $to_email . ' > /dev/null 2> /dev/null & echo $!');
+            return exec('nohup echo ' . $email_message . ' |     ' . $sendmail_path . ' ' . $to_email . ' > /dev/null 2> /dev/null & echo $!');
 
         } else {*/
 
