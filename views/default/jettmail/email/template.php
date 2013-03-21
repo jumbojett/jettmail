@@ -12,7 +12,7 @@ list($user) = get_user_by_email($to_email);
 <head><title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
-<body style="background-color: #F8F8F8;margin:0;padding:0;">
+<body style="background-color: #F8F8F8;margin:0;padding:0;font:14px Calibri,sans-serif;">
 <table id="banner" border="0" cellpadding="0" cellspacing="0"
        style="background-color: #F8F8F8;height: 70px;width:100%;padding:10px;border-bottom: 1px solid #E8E8E8;">
     <tr>
