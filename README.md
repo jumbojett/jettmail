@@ -1,4 +1,4 @@
-jettmail for Elgg
+![jettmail](https://raw.github.com/jumbojett/jettmail/master/jettmail.png) for Elgg
 ==================
 >A robust mail framework for the elgg platform
 
