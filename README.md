@@ -22,20 +22,20 @@ Jett Mail takes elgg email notifications to the next level, allowing deep integr
 
 ## Server Mail Configuration (Unix-based)
  1. Get your server to forward email to the JettMail terminal plugin script
-> Most hosts provide control panel that you can do this easily. If you do not have access to such luxury edit **/etc/aliases** in your favorite editor and add the following line
+> Most hosts provide control panel that you can do this easily. If you do not have access to such luxury edit `/etc/aliases` in your favorite editor and add the following line
 
-    elggmail: "|/usr/bin/php -q /full/path/to/elgg/mod/JettMail2/terminal/handle_email.php"
-> After this is complete type **newaliases** to rebuild the email aliases.
-
-
+    `elggmail: "|/usr/bin/php -q /full/path/to/elgg/mod/JettMail2/terminal/handle_email.php"`
+> After this is complete type `newaliases` to rebuild the email aliases.
 
 
- 2. Create a symbolic link in **/etc/smrsh** so sendmail will know about our script. *If you don't do this then sendmail will spit out the wholly ugly error message Service unavailable, and smrsh: "php" not available for sendmail programs (stat failed).*
+
+
+ 2. Create a symbolic link in `/etc/smrsh` so sendmail will know about our script. *If you don't do this then sendmail will spit out the wholly ugly error message Service unavailable, and smrsh: "php" not available for sendmail programs (stat failed).*
 
     cd /etc/smrsh;
     ln -s /usr/bin/php ./php
 
- 3. Edit **/etc/mail/sendmail.mc** file and add the following
+ 3. Edit `/etc/mail/sendmail.mc` file and add the following
 
     define(\`LUSER_RELAY',\`local:elggmail')dnl
 
