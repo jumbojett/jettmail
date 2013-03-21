@@ -24,7 +24,7 @@ Jett Mail takes elgg email notifications to the next level, allowing deep integr
 Configure the server to forward email to the JettMail terminal plugin script. As a side note, most hosts provide control panel that you can do this easily. If you do not have access to such feature then edit `/etc/aliases` and add the following line
 
 ```
-elggmail: "|/usr/bin/php -q /full/path/to/elgg/mod/jettmail/terminal/handle_email.php"
+jettmail: "|/usr/bin/php -q /full/path/to/elgg/mod/jettmail/terminal/handle_email.php"
 ```
 Rebuild the email aliases. Run the following command from the terminal:
 
@@ -41,7 +41,7 @@ $ ln -s /usr/bin/php ./php
 Edit `/etc/mail/sendmail.mc` file and add the following to tell sendmail to route all messages to the elggmail account which are destined for a user which doesn't exist on our server.
 
 ```
-define(`LUSER_RELAY',`local:elggmail')dnl
+define(`LUSER_RELAY',`local:jettmail')dnl
 ```
 
 ## PHP Configuration
