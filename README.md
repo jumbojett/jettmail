@@ -17,9 +17,10 @@ Jett Mail takes elgg email notifications to the next level, allowing deep integr
  - Elgg 1.8.3 or greater
  - Unix-based
  - PHP 5.3 or greater
+ - PHP MailParse extention
  - Ability to forward incoming emails to PHP scripts. *see below*
 
-## Server Configuration (Unix-based)
+## Server Mail Configuration (Unix-based)
  1. Get your server to forward email to the JettMail terminal plugin script
 > Most hosts provide control panel that you can do this easily. If you do not have access to such luxury edit **/etc/aliases** in your favorite editor and add the following line
 
@@ -40,6 +41,15 @@ Jett Mail takes elgg email notifications to the next level, allowing deep integr
 
     > This will tell sendmail to route all messages to the elggmail account
 which are destined for a user which doesn't exist on our server.
+
+## PHP Configuration
+ 1. Install MailParse
+### Macports
+`sudo port install php5-mailparse`
+### Debian/Ubuntu/Linux Mint Installation
+`sudo apt-get install php5-mailparse`
+
+ 2. Restart Apache `apachectl restart`
 
 ## Server Configuration (Windows-based)
 *Not supported*
