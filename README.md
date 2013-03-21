@@ -38,7 +38,7 @@ Run the following commands from the terminal:
 $ cd /etc/smrsh
 $ ln -s /usr/bin/php ./php
 ```
-Edit `/etc/mail/sendmail.mc` file and add the following to tell sendmail to route all messages to the elggmail account which are destined for a user which doesn't exist on our server.
+Edit `/etc/mail/sendmail.mc` file and add the following to tell sendmail to route all messages to the jettmail account which are destined for a user which doesn't exist on our server.
 
 ```
 define(`LUSER_RELAY',`local:jettmail')dnl
