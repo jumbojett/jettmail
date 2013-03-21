@@ -163,7 +163,7 @@ class JettMailPlugin
         $can_digest = self::canDigest();
 
         // Handle email processing after elgg shuts down
-        elgg_register_event_handler('shutdown', 'system', function () use ($from, $to, $subject, $message, $params, $can_digest) {
+        elgg_register_event_handler('shutdown', 'system', function () use (&$from, &$to, $subject, $message, $params, $can_digest) {
             global $CONFIG;
 
             elgg_set_context('jettmail_email_handler');
