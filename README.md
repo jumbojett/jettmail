@@ -43,8 +43,7 @@ Jett Mail takes elgg email notifications to the next level, allowing deep integr
 which are destined for a user which doesn't exist on our server.
 
 ## PHP Configuration
- 1. Install MailParse
-### Macports
+ 1. ### Macports
 `sudo port install php5-mailparse`
 ### Debian/Ubuntu/Linux Mint Installation
 `sudo apt-get install php5-mailparse`
