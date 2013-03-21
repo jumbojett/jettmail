@@ -3,7 +3,7 @@
 global $CONFIG;
 $notifications = $vars['notifications'];
 $to_email = $vars['to_email'];
-$user = $vars['user']->name;
+list($user) = get_user_by_email($to_email);
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN"
@@ -18,7 +18,7 @@ $user = $vars['user']->name;
     <tr>
 
         <td width="100%" nowrap align="left">
-            <span style="font-weight:bold"><?php echo $user; ?>,</span><br>
+            <span style="font-weight:bold"><?php echo $user->name; ?>,</span><br>
             <span style="font-size:smaller">Here's what's happening on <?php echo $CONFIG->sitename; ?></span>
         </td>
     </tr>
