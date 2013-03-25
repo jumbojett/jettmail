@@ -10,7 +10,11 @@ list($user) = get_user_by_email($to_email);
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head><title></title>
+    <meta content="IE=edge" http-equiv="x-ua-compatible">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+        body, td { font-family: Calibri, Helvetica, Geneva, sans-serif; }
+    </style>
 </head>
 <body style="background-color: #F8F8F8;margin:0;padding:0;font:14px Calibri,sans-serif;">
 <div style="background-color: #F8F8F8;margin:0;padding:0;font:14px Calibri,sans-serif;">
