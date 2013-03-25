@@ -33,7 +33,7 @@ list($user) = get_user_by_email($to_email);
         <tbody>
         <tr>
             <td align="center" bgcolor="#ffffff">
-                <table align="left" style="margin:0 10px;" border="0" cellpadding="0" cellspacing="0" width="640">
+                <table align="center" style="margin:0 10px;" border="0" cellpadding="0" cellspacing="0" width="640">
                     <tbody>
                     <tr>
                         <td height="20" width="640"></td>
