@@ -1,10 +1,9 @@
-![jettmail](https://raw.github.com/jumbojett/jettmail/master/jettmail.png) for Elgg
+![jettmail](https://raw.github.com/jumbojett/jettmail/master/graphics/jettmail.png) for Elgg
 ==================
->A robust mail framework for the elgg platform
+>A robust mail framework for the elgg platform. Jett Mail takes elgg email notifications to the next level, allowing deep integration with email clients.
 
-Jett Mail takes elgg email notifications to the next level, allowing deep integration with email clients.
-
- - plaintext / html support
+## Features
+ - HTML support with plaintext fallback
  - mail process forking
  - daily digest capability
  - reply to notifications directly from email
