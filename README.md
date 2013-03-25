@@ -12,6 +12,10 @@
 
 **Please note this code is in alpha and is currently being developed. Use at your own risk.**
 
+## Thank you
+This code release would not be possible without the support from MITRE's Handshake team. A special thanks goes out to
+Francine Lalooses, Stan Drozdetski (@sdrozdet), Jon Maul (@stucky), Joe Canadas, and Laurie Damianos.
+
 ## Server requirements
  - Elgg 1.8.3 or greater
  - Unix-based
