@@ -28,8 +28,8 @@ list($user) = get_user_by_email($to_email);
            style="background-color: #FFFFFF;border-bottom: 1px solid #E8E8E8;font:14px Calibri,sans-serif;">
         <tbody>
         <tr>
-            <td align="center" bgcolor="#ffffff" style="text-align: left">
-                <table style="margin:0 10px;" border="0" cellpadding="0" cellspacing="0" width="640">
+            <td align="center" bgcolor="#ffffff">
+                <table align="left" style="margin:0 10px;" border="0" cellpadding="0" cellspacing="0" width="640">
                     <tbody>
                     <tr>
                         <td height="20" width="640"></td>
@@ -65,7 +65,7 @@ list($user) = get_user_by_email($to_email);
                             <td bgcolor="#ffffff" height="15" width="640"></td>
                         </tr>
 
-                        <tr id="simple-content-row">
+                        <tr id="simple-content-row" style="text-align: left">
                             <td bgcolor="#ffffff" width="640">
                                 <table border="1" cellpadding="0" cellspacing="0" width="640">
                                     <tbody>
@@ -113,7 +113,7 @@ list($user) = get_user_by_email($to_email);
                         </tr>
                     <?php } ?>
 
-                    <tr>
+                    <tr style="text-align: left">
                         <td bgcolor="#ffffff" width="640">
                             <table border="0" cellpadding="0" cellspacing="0" width="640">
                                 <tbody>
