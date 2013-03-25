@@ -15,7 +15,7 @@ list($user) = get_user_by_email($to_email);
 <body style="background-color: #F8F8F8;margin:0;padding:0;font:14px Calibri,sans-serif;">
 <div style="background-color: #F8F8F8;margin:0;padding:0;font:14px Calibri,sans-serif;">
     <table id="banner" border="0" cellpadding="0" cellspacing="0"
-           style="background-color: #F8F8F8;height: 70px;width:100%;padding:10px;border-bottom: 1px solid #E8E8E8;">
+           style="background-color: #F8F8F8;height: 70px;width:100%;padding:10px;border-bottom: 1px solid #E8E8E8; font:14px Calibri,sans-serif;">
         <tr>
 
             <td width="100%" nowrap align="left">
@@ -25,10 +25,10 @@ list($user) = get_user_by_email($to_email);
         </tr>
     </table>
     <table id="background-table" border="0" cellpadding="0" cellspacing="0" width="100%"
-           style="background-color: #fff;border-bottom: 1px solid #E8E8E8;">
+           style="background-color: #FFFFFF;border-bottom: 1px solid #E8E8E8;font:14px Calibri,sans-serif;">
         <tbody>
         <tr>
-            <td align="center" bgcolor="#ffffff">
+            <td align="center" bgcolor="#ffffff" style="text-align: left">
                 <table style="margin:0 10px;" border="0" cellpadding="0" cellspacing="0" width="640">
                     <tbody>
                     <tr>
@@ -161,7 +161,7 @@ list($user) = get_user_by_email($to_email);
 
                     <tr style="font-size: small;">
                         <td width="640">
-                            <table id="footer" bgcolor="#fff" border="0" cellpadding="0" cellspacing="0" width="640">
+                            <table id="footer" bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" width="640">
                                 <tbody>
                                 <tr>
                                     <td width="30"></td>
