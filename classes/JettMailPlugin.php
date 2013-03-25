@@ -432,7 +432,7 @@ class JettMailPlugin
                 $subtype = $entity->getSubtype();
 
                 // Append an email reply text if these are blog or page notifications
-                if (in_array($subtype, array("blog", "page_top", "page"))) {
+                if (in_array($subtype, array("blog", "page_top", "page", "groupforumtopic", "file", "album"))) {
 
                     $email_text = elgg_view("jettmail/email/address/generate", array(
                         'action' => 'create.generic_comment',
