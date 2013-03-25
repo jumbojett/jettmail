@@ -133,7 +133,7 @@ class JettMailPlugin
         run_function_once(function () {
             // we use a custom SQL table for determining used email integration keys
             // this is for optimal performance reasons
-            run_sql_script(dirname(__FILE__) . '/schema/used_keys.sql');
+            run_sql_script(dirname(dirname(__FILE__)) . '/schema/used_keys.sql');
         });
 
         /**
@@ -253,14 +253,14 @@ class JettMailPlugin
 
         $users = elgg_get_entities(array('type' => 'user', 'limit' => 0));
         foreach ($users as $user) {
-            // if the user has some stored notifications send them out
+            // If the user has stored notifications send them out
             if ($user->notifications && count($user->notifications) != 0) {
 
                 $notifications = unserialize($user->notifications);
 
                 JettMail::sendMail($user->email, elgg_echo("jettmail:digest_subject"), $notifications);
 
-                // reset notifications cache
+                // Reset notifications cache
                 unset($user->notifications);
                 $user->save();
             }
