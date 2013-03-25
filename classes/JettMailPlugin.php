@@ -107,24 +107,24 @@ class JettMailPlugin
         /**
          * Generate a secret email signature key if one isn't present
          */
-        if (!elgg_get_plugin_setting('sig_key', 'JettMail2')) {
-            elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'JettMail2');
+        if (!elgg_get_plugin_setting('sig_key', 'jettmail')) {
+            elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'jettmail');
         }
 
         /**
          * If the user has specifically requested that we regenerate the email signature key
          */
-        if (elgg_get_plugin_setting("refreshSigKey", 'JettMail2') == 'yes') {
-            elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'JettMail2');
-            elgg_set_plugin_setting('refreshSigKey', null, 'JettMail2');
+        if (elgg_get_plugin_setting("refreshSigKey", 'jettmail') == 'yes') {
+            elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'jettmail');
+            elgg_set_plugin_setting('refreshSigKey', null, 'jettmail');
         }
 
         /**
          * Make sure there is a default value for expiring tokens
          * If there isn't set it to 15 days
          */
-        if (!(int)elgg_get_plugin_setting("tokenDaysValid", "JettMail2")) {
-            elgg_set_plugin_setting('tokenDaysValid', 15, "JettMail2");
+        if (!(int)elgg_get_plugin_setting("tokenDaysValid", "jettmail")) {
+            elgg_set_plugin_setting('tokenDaysValid', 15, "jettmail");
         }
 
         /**
@@ -174,7 +174,7 @@ class JettMailPlugin
             }
 
             // Fetch the plugin setting - an admin can disable email altogether
-            $email_enabled = elgg_get_plugin_setting('enable_email', 'JettMail2');
+            $email_enabled = elgg_get_plugin_setting('enable_email', 'jettmail');
             if ($email_enabled == 'no') {
                 return true;
             }
