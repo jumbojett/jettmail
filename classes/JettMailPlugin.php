@@ -155,7 +155,6 @@ class JettMailPlugin
      * @param $subject
      * @param $message
      * @param array $params
-     * @return bool|string
      * @throws NotificationException
      */
     public function emailHandler(ElggEntity $from, ElggUser $to, $subject, $message, array $params = NULL) {
@@ -224,10 +223,10 @@ class JettMailPlugin
                 elgg_set_ignore_access(false);
 
             } else {
-                return JettMail::sendMail($to->email, $subject, array(array((object)array('message' => $message, 'time' => time()))));
+                JettMail::sendMail($to->email, $subject, array(array((object)array('message' => $message, 'time' => time()))));
             }
 
-            return true;
+            return null;
 
         },0);
 
