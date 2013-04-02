@@ -424,6 +424,16 @@ class JettMailPlugin
 
                 global $CONFIG;
 
+                $reply_action = 'create.generic_comment';
+
+                // Group discussions get a different action since they do not truly utilize elgg's generic comment system
+                if (get_input('action') == "groups/addpost"
+                    || get_input('action') == "groups/addtopic"
+                    || get_input('action') == "discussion/reply/save"
+                    || get_input('action') == 'discussion/save') {
+                    $reply_action = 'create.group_topic_post';
+                }
+
                 $entity = $params['entity'];
                 $to_entity = $params['to_entity'];
                 $method = $params['method'];
@@ -434,7 +444,7 @@ class JettMailPlugin
                 if (in_array($subtype, array("blog", "page_top", "page", "groupforumtopic", "file", "album"))) {
 
                     $email_text = elgg_view("jettmail/email/address/generate", array(
-                        'action' => 'create.generic_comment',
+                        'action' => $reply_action,
                         'guid' => $entity->guid,
                         'to_email' => $params['to_entity']->email,
                         'text' => 'email a reply'
