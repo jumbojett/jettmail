@@ -29,84 +29,82 @@
     Approved for Public Release: 12-2907. Distribution Unlimited
 */
 
-    // this script can only be called via the command line
+    // This script can only be called via the command line
     if (!(!empty($argc) && strstr($argv[0], basename(__FILE__)))) {
         die("This script can only be run from the command line");
     }
-    
-    // ignore walled garden
+
+    // Ignore walled garden
     $_SERVER['REQUEST_URI'] = '/';
-    
+
     // Load Elgg engine will not include plugins
     require_once(dirname(dirname(dirname(dirname(__FILE__)))) . "/engine/start.php");
     elgg_set_context('main');
-    
+
     global $CONFIG;
-    
+
     $Parser = new MimeMailParser();
-    
+
     $stream = fopen("php://stdin", "r");
     //stream_set_timeout($stream, 4);
     $Parser->setStream($stream);
-    
+
     $to = $Parser->getHeader('to');
     $from = $Parser->extractEmail('from');
     $subject = $Parser->getHeader('subject');
-    
+
     if (!$from || $from == $to) {
         exit;
     }
-    
-    // security checks
+
+    // Security checks begin
     $EmailVerify = new EmailAddressGenerator();
     $valid = $EmailVerify->verify($Parser->extractEmail('to'), $Parser->extractEmail('from'));
-    
+
     if (!$valid) {
         trigger_error("jettmail caught an invalid incoming email. from :$from to: $to subject: $subject", E_USER_ERROR);
     }
-    
+
     $text = $Parser->getMessageBody('text');
     $html = $Parser->getMessageBody('html');
     $attachments = $Parser->getAttachments();
-    
-    // at this time we only support the text body of the message
-    // MS Outlook prints too much awful html to format it correctly
+
+    // Only extract plaintext portion for use
     $message_body = $text;
-    
-    
-    // remove the original body and just get the reply text
-    // for outlook client replies
+
+    // Remove the original body and just get the reply text
+    // For outlook client replies
     list ($message_body) = explode("From: {$CONFIG->site->name} [mailto:", $message_body);
-    // for outlook web client replies
+    // For outlook web client replies
     list ($message_body) = explode("________________________________", $message_body);
-    
-    // eliminate a possible security hole where the special email address could be printed in the body
+
+    // Eliminate a possible security hole where the special email address could be printed in the body
     $message_body = str_replace($Parser->extractEmail('to'), "", $message_body);
-    
-    // elgg will auto-load html2text class from our classes plugin dir
-    // we make sure this message body is free of html junk
+
+    // Elgg will auto-load html2text class from our classes plugin dir
+    // Make sure this message body is free of HTML
     $h2t = new html2text($message_body);
     $message_body = $h2t->get_text();
-    
+
     list($username, $domain) = explode('@', $Parser->extractEmail('to'));
     list($action_hash, $hash) = explode('+', $username);
     list($action, $type, $action_guid) = explode('.', $action_hash);
-    
+
     list($user) = get_user_by_email($Parser->extractEmail('from'));
-    
+
     $logged_in = login($user, false);
-    
-    // generate new action tokens so elgg won't have a fit
+
+    // Generate new action tokens so elgg won't have a fit
     set_input('__elgg_token', generate_action_token(time()));
     set_input('__elgg_ts', time());
-    
+
     if ($logged_in && is_numeric($action_guid) && $action && $type && $user) {
-    
+
         elgg_trigger_plugin_hook("email:integration:$action" , $type,
             array('attachments' => $attachments
             , 'message' => $message_body
             , 'guid' => $action_guid));
     }
-    
+
     logout();
 
