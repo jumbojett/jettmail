@@ -136,6 +136,8 @@ list($user) = get_user_by_email($to_email);
                 pointer-events: auto;
                 cursor: default;
             }
+
+            table[class=full], td[class=full] { width: 300px !important; }
         }
 
             /* More Specific Targeting */
@@ -218,16 +220,16 @@ list($user) = get_user_by_email($to_email);
                     <tbody>
                     <tr>
                         <td align="center" bgcolor="#ffffff">
-                            <table style="margin:0 10px;" border="0" cellpadding="0" cellspacing="0" width="600">
+                            <table style="margin:0 10px;" border="0" cellpadding="0" cellspacing="0" width="600" class="full">
                                 <tbody>
                                 <tr>
-                                    <td height="20" width="600"></td>
+                                    <td height="20" width="600" class="full"></td>
                                 </tr>
 
                                 <tr>
-                                    <td width="600">
+                                    <td width="600" class="full">
                                         <table id="top-bar" bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0"
-                                               width="600">
+                                               width="600" class="full">
                                             <tbody>
                                             <tr>
                                                 <td align="left" valign="middle">
@@ -251,16 +253,16 @@ list($user) = get_user_by_email($to_email);
                                 </tr>
 
                                 <tr>
-                                    <td height="20" width="600"></td>
+                                    <td height="20" width="600" class="full"></td>
                                 </tr>
                                 <?php if (count($notifications) > 1) { ?>
                                     <tr>
-                                        <td bgcolor="#ffffff" height="15" width="600"></td>
+                                        <td bgcolor="#ffffff" height="15" width="600" class="full"></td>
                                     </tr>
 
-                                    <tr id="simple-content-row" style="text-align: left">
-                                        <td bgcolor="#ffffff" width="600">
-                                            <table border="1" cellpadding="0" cellspacing="0" width="600">
+                                    <tr style="text-align: left">
+                                        <td bgcolor="#ffffff" width="600" class="full">
+                                            <table border="1" cellpadding="0" cellspacing="0" width="600" class="full">
                                                 <tbody>
                                                 <tr>
                                                     <td width="30"></td>
@@ -308,19 +310,19 @@ list($user) = get_user_by_email($to_email);
                                 <?php } ?>
 
                                 <tr style="text-align: left">
-                                    <td bgcolor="#ffffff" width="600">
-                                        <table border="0" cellpadding="0" cellspacing="0" width="600">
+                                    <td bgcolor="#ffffff" width="600" class="full">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="600" class="full">
                                             <tbody>
                                             <tr>
-                                                <td width="600">
+                                                <td width="600" class="full">
                                                     <repeater>
 
                                                         <layout label="Text only">
                                                             <table border="0" cellpadding="0" cellspacing="0"
-                                                                   width="600">
+                                                                   width="600" class="full">
                                                                 <tbody>
                                                                 <tr>
-                                                                    <td width="600">
+                                                                    <td width="600" class="full">
                                                                         <?php $anchor = 0; ?>
                                                                         <h2 style="border-bottom: 1px #C7C7C7 solid;">
                                                                             Details</h2>
@@ -338,7 +340,7 @@ list($user) = get_user_by_email($to_email);
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td height="10" width="600"></td>
+                                                                    <td height="10" width="600" class="full"></td>
                                                                 </tr>
                                                                 </tbody>
                                                             </table>
@@ -355,9 +357,9 @@ list($user) = get_user_by_email($to_email);
                                 </tr>
 
                                 <tr>
-                                    <td width="600">
-                                        <table id="footer" bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0"
-                                               width="600">
+                                    <td width="600" class="full">
+                                        <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0"
+                                               width="600" class="full">
                                             <tbody>
                                             <tr>
                                                 <td valign="top" width="260">
