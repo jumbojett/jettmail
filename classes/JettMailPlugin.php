@@ -358,7 +358,7 @@ class JettMailPlugin
         /**
          * Handle incoming emails for updating status
          */
-        elgg_register_plugin_hook_handler('email:integration:create', 'generic_comment',
+        elgg_register_plugin_hook_handler('email:integration:create', 'status_update',
             function ($hook_name, $entity_type, $return_value, $parameters) {
 
                 // Set update message
