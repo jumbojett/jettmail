@@ -35,7 +35,7 @@
             ?>
     </tr>
     <tr>
-        <td>If you would like to refresh the signature key, then select yes from the drop down.
+        <td>If you would like to refresh the signature key, then check the box.
             <i><strong>CAUTION!!</strong> DO NOT DO THIS
                 unless the system is compromised!
                 This will invalidate all previous email responses generated from email integration.</i>
