@@ -2,7 +2,7 @@
 
 /*
     Plugin Name: jettmail
-    Plugin URI: http://id.mitre.org/
+    Plugin URI: http://mitre.org/
     Description: Extends elgg email capabilities
     Version: 2.0
     Author: Michael Jett
@@ -107,10 +107,15 @@ class EmailAddressGenerator {
         for ($days_ago = 0; $days_ago <= $days_valid; ++$days_ago) {
             if ($hash == $this->sign($action, $from, $domain, $secret, date("Y-m-d", strtotime($days_ago . " days ago")))) {
 
-                // insert a key into the database if it fails then we know that the key has already been used
-                $query = "INSERT INTO {$CONFIG->dbprefix}jettmail_used_keys (`key` ,`expires`) VALUES ('{$hash}', DATE_ADD(NOW(), INTERVAL {$days_valid} DAY))";
+                if (elgg_get_plugin_setting('expire_tokens', 'jettmail') == 'yes') {
+                    // Insert a key into the database.
+                    // If it fails then we know that the key has already been used.
+                    $query = "INSERT INTO {$CONFIG->dbprefix}jettmail_used_keys (`key` ,`expires`) VALUES ('{$hash}', DATE_ADD(NOW(), INTERVAL {$days_valid} DAY))";
 
-                return (insert_data($query) !== FALSE);
+                    return (insert_data($query) !== FALSE);
+                } else {
+                    return true;
+                }
             }
 
         }

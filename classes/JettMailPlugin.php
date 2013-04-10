@@ -99,6 +99,12 @@ class JettMailPlugin
          */
         elgg_register_plugin_hook_handler('usersettings:save', 'user', array($this, 'userSettings'));
 
+        /*
+         * After elgg finishes an entire system execution, send the output to browser
+         * This allows the other system shutdown processes to continue in the background while output gets returned to the user promptly
+         */
+        elgg_register_event_handler('shutdown', 'system', array($this, 'flushToBrowser'),0);
+
         /**
          * Allow the user to turn on/off digest from notification form
          */
@@ -114,9 +120,10 @@ class JettMailPlugin
         /**
          * If the user has specifically requested that we regenerate the email signature key
          */
-        if (elgg_get_plugin_setting("refreshSigKey", 'jettmail') == 'yes') {
+        if (elgg_get_plugin_setting("refreshSigKey", 'jettmail') != null) {
             elgg_set_plugin_setting('sig_key', EmailAddressGenerator::generateSignatureKey(), 'jettmail');
             elgg_set_plugin_setting('refreshSigKey', null, 'jettmail');
+            system_message("The jettmail signature key has been refreshed.");
         }
 
         /**
@@ -146,6 +153,21 @@ class JettMailPlugin
          * Register hooks for appending "email a reply" text to messages
          */
         self::appendEmailReplyToMessages();
+
+    }
+
+    /**
+     * Forces output to the browser so additional php functionality can continue in the background
+     */
+    public function flushToBrowser () {
+
+        if (!headers_sent()) {
+            header("Connection: close");
+            $size = ob_get_length();
+            header("Content-Length: $size");
+            ob_end_flush();
+            flush();
+        }
 
     }
 
@@ -228,7 +250,7 @@ class JettMailPlugin
 
             return null;
 
-        },0);
+        },500);
 
 
     }
