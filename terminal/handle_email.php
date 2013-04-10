@@ -63,6 +63,8 @@
 
     if (!$valid) {
         trigger_error("jettmail caught an invalid incoming email. from :$from to: $to subject: $subject", E_USER_ERROR);
+    } else {
+        elgg_log("jettmail received a valid email. from :$from to: $to subject: $subject");
     }
 
     $text = $Parser->getMessageBody('text');
