@@ -2,7 +2,7 @@
 
 /*
     Plugin Name: jettmail
-    Plugin URI: http://id.mitre.org/
+    Plugin URI: http://mitre.org/
     Description: Extends elgg email capabilities
     Version: 2.0
     Author: Michael Jett
@@ -110,7 +110,7 @@ class JettMail
 
             // send the email via sendmail process that gets spun off in the background
             // psuedo fork it so we don't have to wait
-            return exec('nohup echo ' . $email_message . ' | 	' . $sendmail_path . ' ' . $to_email . ' > /dev/null 2> /dev/null & echo $!');
+            return exec('nohup echo ' . $email_message . ' |     ' . $sendmail_path . ' ' . $to_email . ' > /dev/null 2> /dev/null & echo $!');
 
         } else {*/
 
@@ -137,7 +137,7 @@ class JettMail
 
         $site = get_entity($CONFIG->site_guid);
 
-        $from_email = elgg_trigger_plugin_hook('jettmail:from:name', 'none', array('$to' => $to_email, '$subject' => $subject));
+        $from_email = elgg_trigger_plugin_hook('jettmail:from:email', 'none', array('$to' => $to_email, '$subject' => $subject));
         $from_name = elgg_trigger_plugin_hook('jettmail:from:name', 'none', array('$to' => $to_email, '$subject' => $subject));
 
         $from_email = ($from_email ? $from_email : self::extractFromEmail());
