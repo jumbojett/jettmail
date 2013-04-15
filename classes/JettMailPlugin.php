@@ -2,7 +2,7 @@
 
 /*
     Plugin Name: jettmail
-    Plugin URI: http://id.mitre.org/
+    Plugin URI: http://mitre.org/
     Description: Extends elgg email capabilities
     Version: 2.0
     Author: Michael Jett
@@ -161,7 +161,16 @@ class JettMailPlugin
      */
     public function flushToBrowser () {
 
+        // Registering a shutdown flag allows other points in jettmail to determine if the state is in shutdown
+        $GLOBALS['shutdown_flag']=1;
+
         if (!headers_sent()) {
+
+            // Ignore user aborts and allow the script to run forever
+            ignore_user_abort(true);
+            set_time_limit(0);
+
+            // Tell the browser that we are done
             header("Connection: close");
             $size = ob_get_length();
             header("Content-Length: $size");
@@ -183,8 +192,7 @@ class JettMailPlugin
 
         $can_digest = self::canDigest();
 
-        // Handle email processing after elgg shuts down
-        elgg_register_event_handler('shutdown', 'system', function () use (&$from, &$to, $subject, $message, $params, $can_digest) {
+        $jettmail_notify = function () use ($from, $to, $subject, $message, $params, $can_digest) {
             global $CONFIG;
 
             elgg_set_context('jettmail_email_handler');
@@ -250,7 +258,15 @@ class JettMailPlugin
 
             return null;
 
-        },500);
+        };
+
+        // If the state of execution is in shutdown mode already then notify immediately
+        if (isset($GLOBALS['shutdown_flag'])) {
+            call_user_func($jettmail_notify);
+        } else {
+            // Handle email processing after elgg shuts down
+            elgg_register_event_handler('shutdown', 'system', $jettmail_notify, 500);
+        }
 
 
     }
