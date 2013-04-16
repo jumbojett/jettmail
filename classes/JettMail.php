@@ -78,7 +78,7 @@ class JettMail
         $allow = elgg_trigger_plugin_hook('notify:jettmail:allow', 'all', array('to_email' => $to_email,'subject' => $subject,'notifications' => $notifications), true);
         if (!$allow) return false;
 
-        $message = elgg_view('jettmail/email/template', array('notifications' => $notifications, 'to_email' => $to_email,'subject' => $subject));
+        $message = elgg_view('jettmail/email/template', array('notifications' => $notifications, 'to_email' => $to_email,'subject' => $subject), null, null, 'default');
 
         $html_body = self::toBase64($message);
 
