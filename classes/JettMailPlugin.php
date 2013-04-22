@@ -253,7 +253,13 @@ class JettMailPlugin
                 elgg_set_ignore_access(false);
 
             } else {
-                JettMail::sendMail($to->email, $subject, array(array((object)array('message' => $message, 'time' => time()))));
+                JettMail::sendMail($to->email, $subject,
+                    array(
+                        $from->guid => array(
+                            (object)array('message' => $message, 'time' => time())
+                        )
+                    )
+                );
             }
 
             return null;
