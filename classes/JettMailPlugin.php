@@ -451,7 +451,8 @@ class JettMailPlugin
                     'action' => $reply_action,
                     'guid' => $topic->guid,
                     'to_email' => $params['to_entity']->email,
-                    'text' => 'email a reply'
+                    'text' => 'email a reply',
+                    'subject' => $topic->title
                 ));
 
                 // Append the special email onto the message body
@@ -491,7 +492,8 @@ class JettMailPlugin
                         'action' => $reply_action,
                         'guid' => $entity->guid,
                         'to_email' => $params['to_entity']->email,
-                        'text' => 'email a reply'
+                        'text' => 'email a reply',
+                        'subject' => $entity->title
                     ));
 
                     // Append the special email onto the message body
