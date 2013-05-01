@@ -30,40 +30,6 @@
 
 class JettMailPlugin
 {
-    /**
-     * @var array These are a set of default hooks we watch for to tell elgg whether or not to digest types of notifications
-     */
-    private $digestWatchHooks = array(
-        // Digest group discussion comments
-        array('hook' => 'notify:annotation:message', 'type' => 'group_topic_post'),
-        array('hook' => 'action', 'type' => 'discussion/reply/save'),
-        array('hook' => 'action', 'type' => 'comments/add'),
-        // Digest new initial discussion posts
-        array('hook' => 'notify:entity:message', 'type' => 'object'),
-        array('hook' => 'action', 'type' => 'comments/add')
-    );
-
-    /**
-     * Internal function to let us see if we can digest a hook in context
-     */
-    private function canDigest() {
-        foreach ($this->digestWatchHooks as $watch) {
-            if (elgg_hook_in_context($watch['hook'], $watch['type'])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Public function that allows another plugin to add a digest watch hook
-     * @param $hook
-     * @param $type
-     */
-    public function addDigestWatchHook($hook, $type) {
-        array_push($this->digestWatchHooks, array('hook' => $hook, 'type' => $type));
-    }
 
     /**
      *
@@ -103,7 +69,7 @@ class JettMailPlugin
          * After elgg finishes an entire system execution, send the output to browser
          * This allows the other system shutdown processes to continue in the background while output gets returned to the user promptly
          */
-        elgg_register_event_handler('shutdown', 'system', array($this, 'flushToBrowser'),0);
+        elgg_register_event_handler('shutdown', 'system', array($this, 'flushToBrowser'), 0);
 
         /**
          * Allow the user to turn on/off digest from notification form
@@ -154,15 +120,20 @@ class JettMailPlugin
          */
         self::appendEmailReplyToMessages();
 
+        /**
+         * Register a default hook for determining whether or not to digest a notification
+         */
+        elgg_register_plugin_hook_handler('jettmail:digest:allow', 'all', array($this, 'canDigest'));
+
     }
 
     /**
      * Forces output to the browser so additional php functionality can continue in the background
      */
-    public function flushToBrowser () {
+    public function flushToBrowser() {
 
         // Registering a shutdown flag allows other points in jettmail to determine if the state is in shutdown
-        $GLOBALS['shutdown_flag']=1;
+        $GLOBALS['shutdown_flag'] = 1;
 
         if (!headers_sent()) {
 
@@ -190,7 +161,11 @@ class JettMailPlugin
      */
     public function emailHandler(ElggEntity $from, ElggUser $to, $subject, $message, array $params = NULL) {
 
-        $can_digest = self::canDigest();
+        $can_digest = elgg_trigger_plugin_hook('jettmail:digest:allow', 'all',
+                                                array_merge(array('$to' => $to,
+                                                                '$from' => $from,
+                                                                '$subject' => $subject,
+                                                                '$message' => $message)), $params);
 
         $jettmail_notify = function () use ($from, $to, $subject, $message, $params, $can_digest) {
             global $CONFIG;
@@ -225,7 +200,7 @@ class JettMailPlugin
 
             // If the user has digest enabled
             // And the hook is in context
-            if (isset($to->digest) && $to->digest == 'on' && $can_digest) {
+            if (isset($to->digest) && $to->digest == 'on' && $can_digest === true) {
 
                 elgg_set_ignore_access(true);
 
@@ -475,7 +450,8 @@ class JettMailPlugin
                 if (get_input('action') == "groups/addpost"
                     || get_input('action') == "groups/addtopic"
                     || get_input('action') == "discussion/reply/save"
-                    || get_input('action') == 'discussion/save') {
+                    || get_input('action') == 'discussion/save'
+                ) {
                     $reply_action = 'create.group_topic_post';
                 }
 
@@ -504,6 +480,33 @@ class JettMailPlugin
 
             }, 1000);
 
+    }
+
+    /**
+     * Internal function to let us see if we can digest a hook in context
+     */
+    public function canDigest($hook, $entity_type, $return_value, $params) {
+
+        /**
+         * A set of default hooks we watch for to tell elgg whether or not to digest types of notifications
+         */
+        $digest_watch_hooks = array(
+            // Digest group discussion comments
+            array('hook' => 'notify:annotation:message', 'type' => 'group_topic_post'),
+            array('hook' => 'action', 'type' => 'discussion/reply/save'),
+            array('hook' => 'action', 'type' => 'comments/add'),
+            // Digest new initial discussion posts
+            array('hook' => 'notify:entity:message', 'type' => 'object'),
+            array('hook' => 'action', 'type' => 'comments/add')
+        );
+
+        foreach ($digest_watch_hooks as $watch) {
+            if (elgg_hook_in_context($watch['hook'], $watch['type'])) {
+                return true;
+            }
+        }
+
+        return null;
     }
 }
 
