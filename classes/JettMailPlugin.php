@@ -101,13 +101,9 @@ class JettMailPlugin
         }
 
         /**
-         * Run database setup scripts once
+         * Run database setup scripts
          */
-        run_function_once(function () {
-            // we use a custom SQL table for determining used email integration keys
-            // this is for optimal performance reasons
-            run_sql_script(dirname(dirname(__FILE__)) . '/schema/used_keys.sql');
-        });
+        self::setupUsedKeysTable();
 
         /**
          * Register hooks for incoming emails
@@ -508,6 +504,12 @@ class JettMailPlugin
 
         return null;
     }
+    
+	public function setupUsedKeysTable() {
+		// we use a custom SQL table for determining used email integration keys
+		// this is for optimal performance reasons
+		run_sql_script(dirname(dirname(__FILE__)) . '/schema/used_keys.sql');
+	}
 }
 
 
