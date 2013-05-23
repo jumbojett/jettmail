@@ -119,7 +119,7 @@ class JettMailPlugin
         /**
          * Register a default hook for determining whether or not to digest a notification
          */
-        elgg_register_plugin_hook_handler('jettmail:digest:allow', 'all', array($this, 'canDigest'));
+        elgg_register_plugin_hook_handler('jettmail:digest:allow', 'all', 'jettmail_can_digest');
 
     }
 
@@ -195,8 +195,7 @@ class JettMailPlugin
             $message = elgg_trigger_plugin_hook('notify:jettmail:message', $from->getSubtype(), array('to_entity' => $to), $message);
 
             // If the user has digest enabled
-            // And the hook is in context
-            if (isset($to->digest) && $to->digest == 'on' && $can_digest === true) {
+            if ($can_digest === true) {
 
                 elgg_set_ignore_access(true);
 
@@ -479,37 +478,47 @@ class JettMailPlugin
     }
 
     /**
-     * Internal function to let us see if we can digest a hook in context
+     * Grunt function
      */
-    public function canDigest($hook, $entity_type, $return_value, $params) {
-
-        /**
-         * A set of default hooks we watch for to tell elgg whether or not to digest types of notifications
-         */
-        $digest_watch_hooks = array(
-            // Digest group discussion comments
-            array('hook' => 'notify:annotation:message', 'type' => 'group_topic_post'),
-            array('hook' => 'action', 'type' => 'discussion/reply/save'),
-            array('hook' => 'action', 'type' => 'comments/add'),
-            // Digest new initial discussion posts
-            array('hook' => 'notify:entity:message', 'type' => 'object'),
-            array('hook' => 'action', 'type' => 'comments/add')
-        );
-
-        foreach ($digest_watch_hooks as $watch) {
-            if (elgg_hook_in_context($watch['hook'], $watch['type'])) {
-                return true;
-            }
-        }
-
-        return null;
-    }
-    
-	public function setupUsedKeysTable() {
+    public function setupUsedKeysTable() {
 		// we use a custom SQL table for determining used email integration keys
 		// this is for optimal performance reasons
 		run_sql_script(dirname(dirname(__FILE__)) . '/schema/used_keys.sql');
 	}
+}
+
+/**
+ * Function to let us see if we can digest a hook in context
+ * This is defined outside so we can let the user over-ride the functionality
+ */
+function jettmail_can_digest($hook, $entity_type, $return_value, $params) {
+
+    // Get the digest meta-data option from the user
+    $to = $params['$to'];
+    if (!(isset($to->digest) && $to->digest == 'on')) {
+        return false;
+    }
+
+    /**
+     * A set of default hooks we watch for to tell elgg whether or not to digest types of notifications
+     */
+    $digest_watch_hooks = array(
+        // Digest group discussion comments
+        array('hook' => 'notify:annotation:message', 'type' => 'group_topic_post'),
+        array('hook' => 'action', 'type' => 'discussion/reply/save'),
+        array('hook' => 'action', 'type' => 'comments/add'),
+        // Digest new initial discussion posts
+        array('hook' => 'notify:entity:message', 'type' => 'object'),
+        array('hook' => 'action', 'type' => 'comments/add')
+    );
+
+    foreach ($digest_watch_hooks as $watch) {
+        if (elgg_hook_in_context($watch['hook'], $watch['type'])) {
+            return true;
+        }
+    }
+
+    return null;
 }
 
 
