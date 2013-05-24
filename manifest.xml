@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin_manifest>
-        <field key="author" value="Michael Jett" />
-        <field key="version" value="2.0" />
-        <field key="description" value="Adds an option in the Settings &gt; Notifications page. This will give users options to cache their emails and then send out a big one daily.
+<plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
+	<name>Jett Mail</name>
+	<author>Michael Jett</author>
+	<version>2.0</version>
+	<description>Adds an option in the Settings &gt; Notifications page. This will give users options to cache their emails and then send out a big one daily.
         Make sure /pg/cron/daily is being hit by the crontab.
-        This is also dependent upon the notifications plugin being enabled. Make sure it is placed before the notifications plugin." />
-        <field key="website" value="http://www.mitre.org/" />
-        <field key="licence" value="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2" />
-        <field key="copyright" value="MITRE" />
-        <field key="elgg_version" value="2011052801" />
+	</description>
+	<category>enhancement</category>
+	<category>mail</category>
+	<website>http://www.mitre.org/</website>
+	<copyright>MITRE</copyright>
+	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2</license>
+    <requires>
+        <type>elgg_release</type>
+        <version>1.8</version>
+    </requires>
+    <requires>
+		<type>plugin</type>
+		<name>notifications</name>
+	</requires>
+	<requires>
+		<type>priority</type>
+		<plugin>notifications</plugin>
+		<priority>before</priority>
+	</requires>
 </plugin_manifest>
