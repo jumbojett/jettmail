@@ -75,10 +75,10 @@ class JettMail
     static function sendMail($to_email, $subject, $notifications) {
 
         // Allow other plugins to hook in and determine whether or not the email will be sent
-        $allow = elgg_trigger_plugin_hook('notify:jettmail:allow', 'all', array('to_email' => $to_email, 'subject' => $subject, 'notifications' => $notifications), true);
+        $allow = elgg_trigger_plugin_hook('notify:jettmail:allow', 'all', array('to_email' => $to_email,'subject' => $subject,'notifications' => $notifications), true);
         if (!$allow) return false;
 
-        $message = elgg_view('jettmail/email/template', array('notifications' => $notifications, 'to_email' => $to_email, 'subject' => $subject), null, null, 'default');
+        $message = elgg_view('jettmail/email/template', array('notifications' => $notifications, 'to_email' => $to_email,'subject' => $subject), null, null, 'default');
 
         $html_body = self::toBase64($message);
 
@@ -88,7 +88,7 @@ class JettMail
         // Generate a random boundary string
         $mime_boundary = '_x' . sha1((string)time()) . 'x';
 
-        $headers = self::buildHeaders($to_email, $subject, $notifications);
+        $headers = self::buildHeaders($to_email, $subject);
         $headers .= self::getHeader()->multipart;
         $headers .= sprintf('boundary="%s"', $mime_boundary) . "\r\n";
 
@@ -127,10 +127,9 @@ class JettMail
     /**
      * @param $to_email
      * @param $subject
-     * @param $notifications
      * @return string
      */
-    static function buildHeaders($to_email, $subject, $notifications) {
+    static function buildHeaders($to_email, $subject) {
 
         global $CONFIG;
 
@@ -138,8 +137,8 @@ class JettMail
 
         $site = get_entity($CONFIG->site_guid);
 
-        $from_email = elgg_trigger_plugin_hook('jettmail:from:email', 'none', array('$to' => $to_email, '$subject' => $subject, '$notifications' => $notifications));
-        $from_name = elgg_trigger_plugin_hook('jettmail:from:name', 'none', array('$to' => $to_email, '$subject' => $subject, '$notifications' => $notifications));
+        $from_email = elgg_trigger_plugin_hook('jettmail:from:email', 'none', array('$to' => $to_email, '$subject' => $subject));
+        $from_name = elgg_trigger_plugin_hook('jettmail:from:name', 'none', array('$to' => $to_email, '$subject' => $subject));
 
         $from_email = ($from_email ? $from_email : self::extractFromEmail());
 
