@@ -88,7 +88,7 @@ class JettMail
         // Generate a random boundary string
         $mime_boundary = '_x' . sha1((string)time()) . 'x';
 
-        $headers = self::buildHeaders($to_email, $subject);
+        $headers = self::buildHeaders($to_email, $subject, $notifications);
         $headers .= self::getHeader()->multipart;
         $headers .= sprintf('boundary="%s"', $mime_boundary) . "\r\n";
 
@@ -129,7 +129,7 @@ class JettMail
      * @param $subject
      * @return string
      */
-    static function buildHeaders($to_email, $subject) {
+    static function buildHeaders($to_email, $subject, $notifications) {
 
         global $CONFIG;
 
@@ -137,8 +137,8 @@ class JettMail
 
         $site = get_entity($CONFIG->site_guid);
 
-        $from_email = elgg_trigger_plugin_hook('jettmail:from:email', 'none', array('$to' => $to_email, '$subject' => $subject));
-        $from_name = elgg_trigger_plugin_hook('jettmail:from:name', 'none', array('$to' => $to_email, '$subject' => $subject));
+        $from_email = elgg_trigger_plugin_hook('jettmail:from:email', 'none', array('to' => $to_email, 'subject' => $subject, 'notifications' => $notifications));
+        $from_name = elgg_trigger_plugin_hook('jettmail:from:name', 'none', array('to' => $to_email, 'subject' => $subject, 'notifications' => $notifications));
 
         $from_email = ($from_email ? $from_email : self::extractFromEmail());
 
