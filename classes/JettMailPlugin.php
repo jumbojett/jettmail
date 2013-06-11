@@ -393,7 +393,7 @@ class JettMailPlugin
        /**
         * Handle incoming emails to send private messages
         */
-       elgg_register_plugin_hook_handler('email:integration:create', 'message',
+       elgg_register_plugin_hook_handler('email:integration:create', 'messages',
             function ($hook_name, $entity_type, $return_value, $parameters) {
                 
                 set_input('subject', $parameters['subject']);
