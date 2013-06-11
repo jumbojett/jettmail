@@ -105,7 +105,8 @@
         elgg_trigger_plugin_hook("email:integration:$action" , $type,
             array('attachments' => $attachments
             , 'message' => $message_body
-            , 'guid' => $action_guid));
+            , 'guid' => $action_guid
+            , 'subject' => $subject));
     }
 
     logout();
