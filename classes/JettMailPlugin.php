@@ -135,6 +135,7 @@ class JettMailPlugin
 
             // Ignore user aborts and allow the script to run forever
             ignore_user_abort(true);
+            session_write_close();
             set_time_limit(0);
 
             // Tell the browser that we are done
