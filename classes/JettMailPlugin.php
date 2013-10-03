@@ -256,7 +256,6 @@ class JettMailPlugin
      * @return string
      */
     public function cron($hook, $entity_type, $returnvalue, $params) {
-
         global $CONFIG;
 
         elgg_set_context('jettmail_cron');
@@ -264,26 +263,12 @@ class JettMailPlugin
         /**
          * First task: Let's send off some digests
          */
-
-        $users = elgg_get_entities(array('type' => 'user', 'limit' => 0));
-        foreach ($users as $user) {
-            // If the user has stored notifications send them out
-            if ($user->notifications && count($user->notifications) != 0) {
-
-                $notifications = unserialize($user->notifications);
-
-                JettMail::sendMail($user->email, elgg_echo("jettmail:digest_subject"), $notifications);
-
-                // Reset notifications cache
-                unset($user->notifications);
-                $user->save();
-            }
-        }
-
+        elgg_get_entities(array('type' => 'user', 'limit' => false, 'offset' => 0,  'callback' => 'daily_digest_callback'));
+	
+        
         /**
          * Second task: Do some token cleanup from email integration
          */
-
         $query = "DELETE FROM {$CONFIG->dbprefix}jettmail_used_keys WHERE `expires` < NOW()";
         delete_data($query);
 
@@ -538,5 +523,19 @@ function jettmail_can_digest($hook, $entity_type, $return_value, $params) {
     return null;
 }
 
+function daily_digest_callback($userObj)
+{
+   $user = get_user($userObj->guid);
 
+   if ($user->notifications && count($user->notifications) != 0) {
+
+       $notifications = unserialize($user->notifications);
+
+       JettMail::sendMail($user->email, elgg_echo("jettmail:digest_subject"), $notifications);
+
+       // Reset notifications cache
+       unset($user->notifications);
+       $user->save();
+   }
+}
 
